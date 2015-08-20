@@ -25,6 +25,6 @@ Reactive is based on the idea of FRP[1] and embodies two distinct but useful ide
 
       age.Set(20)
 
-      age.Get() => //2
+      age.Get() => //20
 
      ```
