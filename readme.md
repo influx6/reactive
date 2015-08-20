@@ -4,7 +4,7 @@ Reactive is based on the idea of FRP[1] and embodies two distinct but useful ide
 
 ##Install
 
-  `go get github.com/influx6/reactive`
+    ` go get github.com/influx6/reactive `
 
 ##Examples
 
@@ -13,7 +13,8 @@ Reactive is based on the idea of FRP[1] and embodies two distinct but useful ide
     Mutations occur in every system and creating a simple and elegant means of meeting this constraints is key to any functional reactive system.  Using the ideals of simplification. Reactive provides mutations on basic types supported by the go language and simple builds larger constructs of structs,maps or arrays based on these types. This simplifies and allows change at a basic, approchable level.
 
     e.g
-     `
+
+     ```go
       age := Transform(1)
 
       //changes can be listen to with a callback attached
@@ -26,4 +27,4 @@ Reactive is based on the idea of FRP[1] and embodies two distinct but useful ide
 
       age.Get() => //2
 
-     `
+     ```
