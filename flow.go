@@ -9,6 +9,10 @@ import (
 )
 
 type (
+
+	//MutationStack represents a emission stack
+	// MutationStack flux.Stacks
+
 	//Immutable defines an interface method rules for immutables types. All types meeting this rule must be single type values
 	Immutable interface {
 		Value() interface{}
@@ -59,8 +63,19 @@ func MakeType(val interface{}) (Immutable, error) {
 	return nil, nil
 }
 
-//Reactive returns a new Reactive instance
-func Reactive(m interface{}) (*ReactiveObserver, error) {
+//OnlyMutation returns a stack that vets all data within it is a mutation
+func OnlyMutation(m flux.Stacks) flux.Stacks {
+	return m.Stack(func(data interface{}, _ flux.Stacks) interface{} {
+		mo, ok := data.(*Mutation)
+		if !ok {
+			return nil
+		}
+		return mo
+	}, true)
+}
+
+//Transform returns a new Reactive instance from an interface
+func Transform(m interface{}) (*ReactiveObserver, error) {
 	var im Immutable
 	var err error
 
@@ -68,13 +83,13 @@ func Reactive(m interface{}) (*ReactiveObserver, error) {
 		return nil, err
 	}
 
-	return ReactiveFrom(im), nil
+	return Reactive(im), nil
 }
 
-//ReactiveFrom returns a new Reactive instance
-func ReactiveFrom(m Immutable) *ReactiveObserver {
+//Reactive returns a new Reactive instance
+func Reactive(m Immutable) *ReactiveObserver {
 	return &ReactiveObserver{
-		Stacks: flux.IdentityStack(),
+		Stacks: OnlyMutation(flux.IdentityStack()),
 		data:   NewMutation(m),
 	}
 }
